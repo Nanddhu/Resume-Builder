@@ -3,86 +3,102 @@
 <head>
     <meta charset="utf-8" />
     <title>@ViewData["Title"] - ProfileMaker</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding: 20px;
+        }
+
+        .card {
+            flex: 1 1 300px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            background: #fff;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: 700;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #000;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .signup-btn {
+            background: #1eb8eb;
+            color: #fff !important;
+            padding: 10px 22px;
+            border-radius: 8px;
+        }
+
+        
+    </style>
 </head>
 
-<body style="margin:0;font-family:'Segoe UI', sans-serif;">
+<body>
 
-    <header style="
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        padding:20px 70px;
-        border-bottom:1px solid #eee;
-        background:#fff;
-    ">
+    <header>
+        <a href="/" class="logo-section">
 
-       
-        <a href="/" style="text-decoration:none;">
-            <div style="
-                display:flex;
-                align-items:center;
-                gap:10px;
-                font-size:22px;
-                font-weight:700;
-            ">
+            <!-- ✅ LOGO IMAGE (THIS IS THE FIX) -->
+            <img src="/image1/Kf-logo.png"
+                 alt="Page Logo"
+                 width="48"
+                 height="48" />
 
-                
-                <svg width="28" height="28" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="pmGrad" x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0%" stop-color="#6b0f3f" />
-                            <stop offset="100%" stop-color="#8b1d5a" />
-                        </linearGradient>
-                    </defs>
+            <!-- ✅ TEXT -->
+            <span>
+                <span style="color:#000;">Profile</span>
+                <span style="color:#1eb8eb;">Maker</span>
+            </span>
 
-                    
-                    <rect x="10" y="8" rx="8" ry="8" width="44" height="48" fill="url(#pmGrad)" />
-                   
-                    <circle cx="32" cy="22" r="6" fill="#ffffff" />
-                    
-                    <rect x="20" y="34" width="24" height="3" rx="1.5" fill="#ffffff" />
-                    <rect x="20" y="40" width="18" height="3" rx="1.5" fill="#ffffff" />
-                </svg>
-
-                
-                <span>
-                    <span style="color:#000;">Profile</span>
-                    <span style="color:#6b0f3f;">Maker</span>
-                </span>
-            </div>
         </a>
 
-       
-        <div style="display:flex;gap:20px;align-items:center;">
-            <a asp-controller="Auth"
-               asp-action="Login"
-               style="
-                text-decoration:none;
-                color:#000;
-                font-size:15px;
-                font-weight:500;
-            ">
-                Login
-            </a>
-
-            <a asp-controller="Auth"
-               asp-action="Signup"
-               style="
-                text-decoration:none;
-                background:#6b0f3f;
-                color:#fff;
-                padding:10px 22px;
-                border-radius:8px;
-                font-size:15px;
-                font-weight:500;
-            ">
-                Sign Up
-            </a>
+        <div class="nav-links">
+            <a asp-controller="Auth" asp-action="Login">Login</a>
+            <a asp-controller="Auth" asp-action="Signup" class="signup-btn">Sign Up</a>
         </div>
     </header>
 
     @RenderBody()
 
 </body>
+</html>
+
 </html>
