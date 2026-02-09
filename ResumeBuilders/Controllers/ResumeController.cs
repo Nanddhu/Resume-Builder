@@ -14,14 +14,14 @@ namespace ResumeBuilders.Controllers
 
         public IActionResult Index()
         {
-            var resumes=_Context.Resumes.
+            var resumes = _Context.Resumes.
                 Select(r => new ResumeListViewModel
-            {
-                ResumeId = r.ResumeId,
-                Name = r.FullName,
-                CreatedAt = r.CreatedAt,
-                UpdatedAt = r.UpdatedAt,
-                CreatedBy = r.Created_by
+                {
+                    ResumeId = r.ResumeId,
+                    Name = r.FullName,
+                    CreatedAt = r.CreatedAt,
+                    UpdatedAt = r.UpdatedAt,
+                    CreatedBy = r.User.Name
                 }).ToList();
             return View(resumes);
         }

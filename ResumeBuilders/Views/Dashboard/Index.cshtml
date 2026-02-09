@@ -2,305 +2,196 @@
 
 @{
     ViewData["Title"] = "Dashboard";
-    Layout = null;
-    var sno = 1;
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>Dashboard</title>
-    <link rel="stylesheet"
-       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<div class="dashboard-bg">
 
-        body {
-            font-family: "Segoe UI", Arial, sans-serif;
-            background: #f9fafb;
-        }
-
-        .navbar {
-            background: #ffffff;
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-
-        .navbar-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 20px;
-            font-weight: 700;
-            text-decoration: none;
-            color: #1f2937;
-        }
-
-            .navbar-left svg {
-                width: 32px;
-                height: 32px;
-            }
-
-            .navbar-left span {
-                color: #1eb8eb;
-            }
-
-        .navbar-right {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-            .user-info .user-avatar {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                background: #1eb8eb;
-                color: #ffffff;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-weight: 600;
-                font-size: 18px;
-            }
-
-            .user-info .user-name {
-                font-size: 14px;
-                color: #1f2937;
-                font-weight: 500;
-            }
-
-        .logout-btn {
-            padding: 10px 20px;
-            background: #1eb8eb;
-            color: #ffffff;
-            border: none;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-            .logout-btn:hover {
-                background: #1975B8;
-            }
-
-        .dashboard {
-            
-            padding:40px 80px;
-            
-        }    
-
-            .table-section {
-                width: 100%;
-            }
-
-            .table-card{
-                background:#ffffff;
-                border-radius: 14px;
-               box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-               padding: 30px;
-            }
-            .resume-table{
-                width:100%;
-            border-collapse: collapse;
-            }
-            .resume-table thead{
-                background:#1eb8eb;
-                color:#ffffff;
-            }
-            .resume-table th, .resume-table td{
-                padding:14px 16px;
-                text-align:left;
-                font-size: 14px;
-            }
-            .resume-table tbody tr{
-                border-bottom: dashed 1px #e5e7eb;
-            }
-
-            .resume-table tbody tr:hover {
-                    background: #f9f1f5;
-              }
-
-            .action-icons {
-                display: flex;
-                gap: 14px;
-            }
-
-            .action-icons a {
-                color: #1eb8eb;
-                text-decoration: none;
-                font-size: 18px;
-            }
-
-            .action-icons a:hover {
-                    color: #1975B8;
-            }
-            .action-icons i {
-                font-size: 18px;
-                cursor: pointer;
-            }
-            .create-resume-section {
-                display: flex;
-                justify-content: center;
-                margin-top: 40px;
-            }
-
-            .create-resume-btn {
-                display: inline-flex;
-                align-items: center;
-                gap: 10px;
-                padding: 14px 28px;
-                background: #1eb8eb;
-                color: #ffffff;
-                font-size: 16px;
-                font-weight: 600;
-                border-radius: 10px;
-                text-decoration: none;
-                box-shadow: 0 12px 25px rgba(107, 15, 63, 0.35);
-                transition: all 0.3s ease;
-            }
-
-            .create-resume-btn i {
-                font-size: 18px;
-            }
-
-            .create-resume-btn:hover {
-                background: #1975B8;
-                transform: translateY(-2px);
-            }
-
-    </style>
-</head>
-
-<body>
-
-  
-    <div class="navbar">
-        <a href="/" class="navbar-left" style="text-decoration: none;">
-            <svg width="32" height="32" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <linearGradient id="pmGrad" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stop-color="#1eb8eb" />
-                        <stop offset="100%" stop-color="#1975B8" />
-                    </linearGradient>
-                </defs>
-                <rect x="10" y="8" rx="8" ry="8" width="44" height="48" fill="url(#pmGrad)" />
-                <circle cx="32" cy="22" r="6" fill="#ffffff" />
-                <rect x="20" y="34" width="24" height="3" rx="1.5" fill="#ffffff" />
-                <rect x="20" y="40" width="18" height="3" rx="1.5" fill="#ffffff" />
-            </svg>
-            <span>
-                <span style="color: #000;">Profile</span>
-                <span style="color: #1eb8eb;">Maker</span>
-            </span>
-        </a>
-
-        <div class="navbar-right">
-            <div class="user-info">
-                <div class="user-avatar">
-                    @{
-                        var firstLetter = !string.IsNullOrEmpty(ViewBag.UserName)
-                        ? char.ToUpper(ViewBag.UserName[0]).ToString()
-                        : "U";
-                    }
-                    @firstLetter
-                </div>
-                <div class="user-name">
-                    @ViewBag.UserName
-                </div>
-            </div>
-
-            <form asp-action="Logout" asp-controller="Auth" method="post" style="display: inline;">
-                <button type="submit" class="logout-btn">Logout</button>
-            </form>
-        </div>
+    <!-- Search Bar -->
+    <div class="search-wrapper">
+        <input type="text" id="searchInput" placeholder="Search by candidate name or resume type..." />
     </div>
 
-   
-    <div class="dashboard">
-        
-        <div class="table-section">
-        <div class="table-card">
-            <table class="resume-table">
-                <thead>
+    <!-- Table Card -->
+    <div class="dashboard-card">
+
+        <div class="card-header">
+            <h3>My Resumes</h3>
+            <span>@Model.Count resumes</span>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Candidate Name</th>
+                    <th>Resume Type</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
+                    <th>Created By</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var r in Model)
+                {
                     <tr>
-                        <th>S.No</th>
-                        <th>Resume ID</th>
-                        <th>Name</th>
-                        <th>Created At</th>
-                        <th>Updated At</th>
-                        <th>Created By</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>@sno</td>
-                            <td>@item.ResumeId</td>
-                            <td>@item.Name</td>
-                            <td>@item.CreatedAt.ToString("yyyy-MM-dd")</td>
-                            <td>@item.UpdatedAt.ToString("yyyy-MM-dd")</td>
-                            <td>@item.CreatedBy</td>
-                            <td>
-                                <div class="action-icons">
-                                    <a asp-action="View" asp-route-id="@item.ResumeId" title="View">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                    <a asp-action="EditResume"
-                                       asp-route-id="@item.ResumeId"
-                                       title="Edit">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </a>
-                                    <a asp-action="DeleteResume"
-                                       asp-route-id="@item.ResumeId"
-                                       title="Delete"
-                                       onclick="return confirm('Are you sure?')">
-                                        <i class="bi bi-trash"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                        sno++;
-                    }
-                </tbody>
-            </table>
-        </div>
+                        <td>
+                            <strong>@r.Name</strong>
+                            <div class="small-text">@r.ResumeId</div>
+                        </td>
 
-        </div>
-      
-        <div class="create-resume-section">
-            <a asp-controller="Resume"
-               asp-action="Create"
-               class="create-resume-btn">
-                <i class="bi bi-plus-circle"></i>
-                Create Resume
-            </a>
-        </div>
+                        <td>
+                            <span class="badge">Developer</span>
+                        </td>
+
+                        <td>
+                            @r.CreatedAt.ToString("MM dd, yyyy")
+                            <div class="small-text">@r.CreatedAt.ToString("hh:mm tt")</div>
+                        </td>
+
+                        <td>
+                            @r.UpdatedAt.ToString("MM dd, yyyy")
+                            <div class="small-text">@r.UpdatedAt.ToString("hh:mm tt")</div>
+                        </td>
+
+                        <td>@r.CreatedBy</td>
+
+                        <td>
+                            <div class="actions">
+                                <a asp-action="View" asp-route-id="@r.ResumeId">👁</a>
+                                <a asp-action="EditResume" asp-route-id="@r.ResumeId">✏</a>
+                                <a asp-action="DeleteResume"
+                                   asp-route-id="@r.ResumeId"
+                                   onclick="return confirm('Delete resume?')">🗑</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
 
     </div>
 
-</body>
-</html>
+    <a asp-action="Create" asp-controller="Resume" class="create-btn">
+        + Create New Resume
+    </a>
+</div>
+
+
+<style>
+    body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+    }
+
+    .dashboard-bg {
+        min-height: 100vh;
+        background: linear-gradient(135deg,#e8f7fb,#dff5fb);
+        padding: 80px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .search-wrapper {
+        width: 1100px;
+        max-width: 100%;
+        background: white;
+        padding: 18px 22px;
+        border-radius: 14px;
+        box-shadow: 0 8px 20px rgba(0,0,0,.08);
+        margin-bottom: 40px;
+    }
+
+        .search-wrapper input {
+            width: 100%;
+            border: none;
+            font-size: 16px;
+            outline: none;
+        }
+
+    .dashboard-card {
+        width: 1100px;
+        max-width: 100%;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 15px 40px rgba(0,0,0,.12);
+        overflow: hidden;
+    }
+
+    .card-header {
+        padding: 22px 26px;
+        display: flex;
+        justify-content: space-between;
+        font-weight: 600;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    thead {
+        background: #f5f7fa;
+    }
+
+    th, td {
+        padding: 16px 18px;
+        text-align: left;
+        font-size: 14px;
+    }
+
+    tbody tr {
+        border-top: 1px solid #eee;
+    }
+
+    .small-text {
+        font-size: 12px;
+        color: #777;
+        margin-top: 4px;
+    }
+
+    .badge {
+        background: #e3efff;
+        color: #2979ff;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .actions {
+        display: flex;
+        gap: 10px;
+    }
+
+        .actions a {
+            border: 1px solid #ddd;
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 15px;
+            background: white;
+        }
+
+            .actions a:hover {
+                background: #eef6ff;
+            }
+
+    .create-btn {
+        margin-top: 35px;
+        background: #2563eb;
+        color: white;
+        padding: 14px 36px;
+        border-radius: 12px;
+        font-size: 16px;
+        text-decoration: none;
+        font-weight: 600;
+    }
+</style>
