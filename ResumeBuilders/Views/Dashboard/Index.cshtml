@@ -1,197 +1,419 @@
-﻿@model List<ResumeBuilders.Models.ViewModels.ResumeListViewModel>
-
-@{
-    ViewData["Title"] = "Dashboard";
-}
-
-
-
-<div class="dashboard-bg">
-
-    <!-- Search Bar -->
-    <div class="search-wrapper">
-        <input type="text" id="searchInput" placeholder="Search by candidate name or resume type..." />
-    </div>
-
-    <!-- Table Card -->
-    <div class="dashboard-card">
-
-        <div class="card-header">
-            <h3>My Resumes</h3>
-            <span>@Model.Count resumes</span>
-        </div>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Candidate Name</th>
-                    <th>Resume Type</th>
-                    <th>Created At</th>
-                    <th>Updated At</th>
-                    <th>Created By</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @foreach (var r in Model)
-                {
-                    <tr>
-                        <td>
-                            <strong>@r.Name</strong>
-                            <div class="small-text">@r.ResumeId</div>
-                        </td>
-
-                        <td>
-                            <span class="badge">Developer</span>
-                        </td>
-
-                        <td>
-                            @r.CreatedAt.ToString("MM dd, yyyy")
-                            <div class="small-text">@r.CreatedAt.ToString("hh:mm tt")</div>
-                        </td>
-
-                        <td>
-                            @r.UpdatedAt.ToString("MM dd, yyyy")
-                            <div class="small-text">@r.UpdatedAt.ToString("hh:mm tt")</div>
-                        </td>
-
-                        <td>@r.CreatedBy</td>
-
-                        <td>
-                            <div class="actions">
-                                <a asp-action="View" asp-route-id="@r.ResumeId">👁</a>
-                                <a asp-action="EditResume" asp-route-id="@r.ResumeId">✏</a>
-                                <a asp-action="DeleteResume"
-                                   asp-route-id="@r.ResumeId"
-                                   onclick="return confirm('Delete resume?')">🗑</a>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-
-    </div>
-
-    <a asp-action="Create" asp-controller="Resume" class="create-btn">
-        + Create New Resume
-    </a>
-</div>
-
-
-<style>
-    body {
-        margin: 0;
-        font-family: "Segoe UI", sans-serif;
-    }
-
-    .dashboard-bg {
-        min-height: 100vh;
-        background: linear-gradient(135deg,#e8f7fb,#dff5fb);
-        padding: 80px 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .search-wrapper {
-        width: 1100px;
-        max-width: 100%;
-        background: white;
-        padding: 18px 22px;
-        border-radius: 14px;
-        box-shadow: 0 8px 20px rgba(0,0,0,.08);
-        margin-bottom: 40px;
-    }
-
-        .search-wrapper input {
-            width: 100%;
-            border: none;
-            font-size: 16px;
-            outline: none;
+﻿<!doctype html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/_sdk/element_sdk.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <style>
+        body {
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
-    .dashboard-card {
-        width: 1100px;
-        max-width: 100%;
-        background: white;
-        border-radius: 16px;
-        box-shadow: 0 15px 40px rgba(0,0,0,.12);
-        overflow: hidden;
-    }
-
-    .card-header {
-        padding: 22px 26px;
-        display: flex;
-        justify-content: space-between;
-        font-weight: 600;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    thead {
-        background: #f5f7fa;
-    }
-
-    th, td {
-        padding: 16px 18px;
-        text-align: left;
-        font-size: 14px;
-    }
-
-    tbody tr {
-        border-top: 1px solid #eee;
-    }
-
-    .small-text {
-        font-size: 12px;
-        color: #777;
-        margin-top: 4px;
-    }
-
-    .badge {
-        background: #e3efff;
-        color: #2979ff;
-        padding: 6px 14px;
-        border-radius: 20px;
-        font-size: 13px;
-        font-weight: 500;
-    }
-
-    .actions {
-        display: flex;
-        gap: 10px;
-    }
-
-        .actions a {
-            border: 1px solid #ddd;
-            width: 34px;
-            height: 34px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            font-size: 15px;
-            background: white;
+        .table-row-hover:hover {
+            background-color: #f0f7ff;
         }
 
-            .actions a:hover {
-                background: #eef6ff;
+        .editable-cell {
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+            .editable-cell:hover {
+                background-color: #eff6ff;
             }
 
-    .create-btn {
-        margin-top: 35px;
-        background: #2563eb;
-        color: white;
-        padding: 14px 36px;
-        border-radius: 12px;
-        font-size: 16px;
-        text-decoration: none;
-        font-weight: 600;
-    }
-</style>
+            .editable-cell input {
+                font-family: 'Plus Jakarta Sans', sans-serif;
+            }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-completed {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .status-progress {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+    </style>
+    <style>
+        @ViewBag -transition {
+            navigation: auto;
+        }</style>
+    <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+</head>
+<body class="h-full bg-gray-50 overflow-auto">
+    <div id="app-wrapper" class="w-full h-full min-h-full">
+        <!-- Sidebar -->
+        <aside class="fixed left-0 top-0 h-full w-64 bg-white border-r border-gray-200 flex flex-col z-10">
+            <!-- Logo -->
+            <div class="p-6 border-b border-gray-100">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-[#1eb8eb] flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div><span class="font-bold text-xl text-gray-800">Profile Maker</span>
+                </div>
+            </div><!-- Navigation -->
+            <nav class="flex-1 p-4">
+                <ul class="space-y-2">
+                    <li>
+                        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-blue-50 text-blue-700 font-medium transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                            </svg> My Resumes
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg> About Us
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg> Contact Us
+                        </a>
+                    </li>
+                </ul>
+            </nav><!-- User Profile -->
+            <div class="p-4 border-t border-gray-100">
+                <div class="flex items-center gap-3 px-3 py-2">
+                    <div class="w-10 h-10 rounded-full bg-[#1eb8eb] flex items-center justify-center text-white font-semibold">
+                        JD
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-medium text-gray-800 truncate">John Doe</p>
+                        <p class="text-sm text-gray-500 truncate">john@example.com</p>
+                    </div>
+                </div>
+            </div>
+        </aside><!-- Main Content -->
+        <main class="ml-64 p-8">
+            <!-- Header Section -->
+            <header class="mb-8">
+                <div class="mb-6">
+                    <h1 id="page-title" class="text-3xl font-bold text-gray-800 mb-2">My Resumes</h1>
+                    <p id="welcome-message" class="text-gray-600">Manage your resumes here</p>
+                </div><!-- Search, Sort, and Create Bar -->
+                <div class="flex items-center gap-4 bg-white p-4 rounded-xl border border-gray-200">
+                    <div class="flex-1 relative">
+                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg><input type="text" id="search-input" placeholder="Search resumes..." class="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                    </div><select id="sort-select" class="px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"> <option value="date-desc">Last Modified</option> <option value="date-asc">Date Created (Oldest)</option> <option value="name-asc">Name (A-Z)</option> <option value="name-desc">Name (Z-A)</option> </select> 
+                    <a asp-controller="Create" asp-action="Step1" class="inline-block">
+                        <button id="create-btn"
+                                class="px-6 py-2.5 bg-[#1eb8eb] text-white rounded-lg font-semibold
+               hover:bg-[#179dc8] transition-colors flex items-center gap-2 whitespace-nowrap">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M12 4v16m8-8H4" />
+                            </svg>
+                            Create Resume
+                        </button>
+                    </a>
+
+                </div>
+            </header><!-- Stats Cards -->
+            <section class="grid grid-cols-2 gap-4 mb-8">
+                <div class="bg-white rounded-xl p-6 border border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600 mb-1">Total Resumes</p>
+                            <p class="text-3xl font-bold text-gray-800">12</p>
+                        </div>
+                        <div class="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-[#1eb8eb]" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl p-6 border border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600 mb-1">Downloads</p>
+                            <p class="text-3xl font-bold text-gray-800">47</p>
+                        </div>
+                        <div class="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-[#1eb8eb]" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </section><!-- Resumes Table -->
+            <section class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-gray-200 bg-gray-50">
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Candidate Name</th>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Role</th>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Created At</th>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Modified At</th>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Created By</th>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resume-table-body">
+                        <!-- Table rows will be generated here -->
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+    <script>
+        const defaultConfig = {
+          page_title: 'My Resumes',
+          welcome_message: 'Manage your resumes here',
+          primary_color: '#2563eb',
+          secondary_color: '#f0f7ff',
+          text_color: '#1f2937',
+          accent_color: '#1975B8',
+          surface_color: '#ffffff'
+        };
+
+        let config = { ...defaultConfig };
+
+        // Sample resume data
+        const resumeData = [
+          { id: 1, candidateName: 'John Smith', role: 'Software Engineer', createdAt: '2024-01-15', modifiedAt: '2h ago', createdBy: 'Admin', status: 'Completed' },
+          { id: 2, candidateName: 'Sarah Johnson', role: 'UX Designer', createdAt: '2024-01-10', modifiedAt: '1d ago', createdBy: 'Admin', status: 'In Progress' },
+          { id: 3, candidateName: 'Michael Brown', role: 'Marketing Manager', createdAt: '2024-01-08', modifiedAt: '3d ago', createdBy: 'John Doe', status: 'Completed' },
+          { id: 4, candidateName: 'Emily Davis', role: 'Data Analyst', createdAt: '2024-01-05', modifiedAt: '5d ago', createdBy: 'Admin', status: 'Completed' },
+          { id: 5, candidateName: 'David Wilson', role: 'Product Manager', createdAt: '2023-12-30', modifiedAt: '1w ago', createdBy: 'John Doe', status: 'In Progress' },
+          { id: 6, candidateName: 'Lisa Anderson', role: 'Full Stack Developer', createdAt: '2023-12-20', modifiedAt: '2w ago', createdBy: 'Admin', status: 'Completed' },
+        ];
+
+        let filteredData = [...resumeData];
+
+        function renderTable() {
+          const tbody = document.getElementById('resume-table-body');
+          tbody.innerHTML = '';
+
+          filteredData.forEach((resume) => {
+            const row = document.createElement('tr');
+            row.className = 'table-row-hover border-b border-gray-100';
+
+            row.innerHTML = `
+              <td class="px-6 py-4">
+                <div class="editable-cell cursor-pointer font-medium text-gray-800" data-field="candidateName" data-id="${resume.id}">
+                  ${resume.candidateName}
+                </div>
+              </td>
+              <td class="px-6 py-4">
+                <div class="editable-cell cursor-pointer text-gray-600" data-field="role" data-id="${resume.id}">
+                  ${resume.role}
+                </div>
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-600">
+                ${resume.createdAt}
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-600">
+                ${resume.modifiedAt}
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-600">
+                ${resume.createdBy}
+              </td>
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-2">
+                  <button class="p-2 rounded-lg bg-blue-50 text-[#1eb8eb] hover:bg-blue-100 transition-colors" title="Edit">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                    </svg>
+                  </button>
+                 <button class="p-2 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition-colors" title="View">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                </svg>
+              </button>
+                  <button class="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors" title="Delete">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+                  </button>
+                </div>
+              </td>
+            `;
+
+            // Add click handlers for editable cells
+            const editableCells = row.querySelectorAll('.editable-cell');
+            editableCells.forEach(cell => {
+              cell.addEventListener('click', (e) => {
+                e.stopPropagation();
+                makeEditable(cell, resume);
+              });
+            });
+
+            tbody.appendChild(row);
+          });
+        }
+
+        function makeEditable(cell, resume) {
+          if (cell.querySelector('input')) return;
+
+          const field = cell.dataset.field;
+          const currentValue = resume[field];
+          const originalText = cell.textContent;
+
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.value = currentValue;
+          input.className = 'w-full px-2 py-1 border border-blue-400 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500';
+
+          cell.innerHTML = '';
+          cell.appendChild(input);
+          input.focus();
+          input.select();
+
+          function saveEdit() {
+            const newValue = input.value.trim() || currentValue;
+            resume[field] = newValue;
+            cell.textContent = newValue;
+          }
+
+          function cancelEdit() {
+            cell.textContent = originalText;
+          }
+
+          input.addEventListener('blur', saveEdit);
+          input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') saveEdit();
+            if (e.key === 'Escape') cancelEdit();
+          });
+        }
+
+        function filterAndSort() {
+          const searchQuery = document.getElementById('search-input').value.toLowerCase();
+          const sortValue = document.getElementById('sort-select').value;
+
+          // Filter
+          filteredData = resumeData.filter(resume =>
+            resume.candidateName.toLowerCase().includes(searchQuery) ||
+            resume.role.toLowerCase().includes(searchQuery)
+          );
+
+          // Sort
+          switch (sortValue) {
+            case 'name-asc':
+              filteredData.sort((a, b) => a.candidateName.localeCompare(b.candidateName));
+              break;
+            case 'name-desc':
+              filteredData.sort((a, b) => b.candidateName.localeCompare(a.candidateName));
+              break;
+            case 'date-asc':
+              filteredData.sort((a, b) => {
+                const dateA = new Date(a.createdAt);
+                const dateB = new Date(b.createdAt);
+                return dateA - dateB;
+              });
+              break;
+            case 'date-desc':
+            default:
+              // Keep original order (most recent first)
+              break;
+          }
+
+          renderTable();
+        }
+
+        // Event listeners
+        document.getElementById('search-input').addEventListener('input', filterAndSort);
+        document.getElementById('sort-select').addEventListener('change', filterAndSort);
+
+        async function onConfigChange(newConfig) {
+          config = { ...config, ...newConfig };
+
+          const pageTitle = document.getElementById('page-title');
+          const welcomeMessage = document.getElementById('welcome-message');
+
+          if (pageTitle) {
+            pageTitle.textContent = config.page_title || defaultConfig.page_title;
+          }
+          if (welcomeMessage) {
+            welcomeMessage.textContent = config.welcome_message || defaultConfig.welcome_message;
+          }
+        }
+
+        function mapToCapabilities(config) {
+          return {
+            recolorables: [
+              {
+                get: () => config.secondary_color || defaultConfig.secondary_color,
+                set: (value) => {
+                  config.secondary_color = value;
+                  window.elementSdk.setConfig({ secondary_color: value });
+                }
+              },
+              {
+                get: () => config.surface_color || defaultConfig.surface_color,
+                set: (value) => {
+                  config.surface_color = value;
+                  window.elementSdk.setConfig({ surface_color: value });
+                }
+              },
+              {
+                get: () => config.text_color || defaultConfig.text_color,
+                set: (value) => {
+                  config.text_color = value;
+                  window.elementSdk.setConfig({ text_color: value });
+                }
+              },
+              {
+                get: () => config.primary_color || defaultConfig.primary_color,
+                set: (value) => {
+                  config.primary_color = value;
+                  window.elementSdk.setConfig({ primary_color: value });
+                }
+              }
+            ],
+            borderables: [],
+            fontEditable: undefined,
+            fontSizeable: undefined
+          };
+        }
+
+        function mapToEditPanelValues(config) {
+          return new Map([
+            ['page_title', config.page_title || defaultConfig.page_title],
+            ['welcome_message', config.welcome_message || defaultConfig.welcome_message]
+          ]);
+        }
+
+        // Initialize
+        renderTable();
+
+        if (window.elementSdk) {
+          window.elementSdk.init({
+            defaultConfig,
+            onConfigChange,
+            mapToCapabilities,
+            mapToEditPanelValues
+          });
+        }
+    </script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cb2892d72027ffe',t:'MTc3MDYzMTM5NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>
