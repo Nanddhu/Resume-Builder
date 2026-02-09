@@ -38,7 +38,7 @@ public class DashboardController : Controller
                 Name = r.FullName,
                 CreatedAt = r.CreatedAt,
                 UpdatedAt = r.UpdatedAt,
-                CreatedBy = r.Created_by
+                CreatedBy = r.User.Name
             })
             .ToList();
 

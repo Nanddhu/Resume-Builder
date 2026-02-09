@@ -1,0 +1,162 @@
+﻿@{
+    ViewData["Title"] = "Resume Builder";
+}
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Resume Builder</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, sans-serif;
+            background: #fafafa;
+        }
+
+        .stepper-container {
+            max-width: 1100px;
+            margin: 40px auto;
+        }
+
+        .stepper {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0;
+            margin: 0 auto;
+            max-width: 1000px;
+        }
+
+        .step {
+            text-align: center;
+            flex: 1;
+            position: relative;
+        }
+
+            .step a {
+                text-decoration: none;
+                color: inherit;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+        .circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .label {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+
+        .step.active .circle {
+            background: #1975B8;
+            color: #ffffff;
+        }
+
+        .step.active .label {
+            color: #1975B8;
+            font-weight: 600;
+        }
+
+
+        .step-content {
+            max-width: 1100px;
+            margin: 40px auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="stepper-container">
+        <ul class="stepper">
+
+            <li class="step @(ViewBag.Step == 1 ? "active" : "")">
+                <a asp-controller="Create" asp-action="Step1">
+                    <div class="circle">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div class="label">Resume</div>
+                </a>
+            </li>
+
+            <li class="step @(ViewBag.Step == 2 ? "active" : "")">
+                <a asp-controller="Create" asp-action="Step2">
+                    <div class="circle">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <div class="label">Education</div>
+                </a>
+            </li>
+
+            <li class="step @(ViewBag.Step == 3 ? "active" : "")">
+                <a asp-controller="Create" asp-action="Step3">
+                    <div class="circle">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <div class="label">Skills</div>
+                </a>
+            </li>
+
+            <li class="step @(ViewBag.Step == 4 ? "active" : "")">
+                <a asp-controller="Create" asp-action="Step4">
+                    <div class="circle">
+                        <i class="fa-solid fa-certificate"></i>
+                    </div>
+                    <div class="label">Certification</div>
+                </a>
+            </li>
+
+            <li class="step @(ViewBag.Step == 5 ? "active" : "")">
+                <a asp-controller="Create" asp-action="Step5">
+                    <div class="circle">
+                        <i class="fa-solid fa-diagram-project"></i>
+                    </div>
+                    <div class="label">Projects</div>
+                </a>
+            </li>
+
+            <li class="step @(ViewBag.Step == 6 ? "active" : "")">
+                <a asp-controller="Create" asp-action="Step6">
+                    <div class="circle">
+                        <i class="fa-solid fa-eye"></i>
+                    </div>
+                    <div class="label">Preview</div>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+
+
+    <div class="step-content">
+        @RenderBody()
+    </div>
+
+</body>
+</html>
+
+

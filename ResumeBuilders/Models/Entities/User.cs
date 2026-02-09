@@ -7,7 +7,7 @@ namespace ResumeBuilders.Models.Entities
     public class User
     {
         [Key]
-        [Column("UserId")]
+        [Column("Id")]
 
         public int UserId { get; set; }
         [Column("Name")]
@@ -18,5 +18,7 @@ namespace ResumeBuilders.Models.Entities
         public string PasswordHash { get; set; } = null!;
         [Column("CreatedAt")]
         public DateTime CreatedAt { get; set; }
+
+        public ICollection<Resume> Resumes { get; set; } = new List<Resume>();
     }
 }

@@ -9,11 +9,14 @@ namespace ResumeBuilders.Models.Entities
     public class Resume
     {
         [Key]
-        [Column("ResumeId")]
+        [Column("ID")]
         public int ResumeId { get; set; }
 
-        [Column("UserId")]
+        [Column("UserID")]
         public int UserId { get; set; }
+
+        [ForeignKey(nameof(UserId))]
+        public User User { get; set; } = null!;
 
 
         [Column("FullName")]
@@ -45,11 +48,6 @@ namespace ResumeBuilders.Models.Entities
 
         [Column("UpdatedAt")]
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        [Column]
-        public string Created_by { get; set; } = null!;
 
-
-        [ForeignKey("UserId")]
-        public User User { get; set; }= null!;
     }
 }

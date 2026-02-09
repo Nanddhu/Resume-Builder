@@ -1,0 +1,182 @@
+﻿@{
+    ViewData["Title"] = "Step 4 - Certifications";
+    Layout = "~/Views/Create/Index.cshtml";
+}
+
+<style>
+    * {
+        box-sizing: border-box;
+        font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+        margin: 0;
+        background: #ffffff;
+    }
+
+    .form-card {
+        background: #fff;
+        padding: 40px;
+        border-radius: 14px;
+        box-shadow: 0 20px 40px rgba(0,0,0,.1);
+        max-width: 900px;
+        margin: auto;
+    }
+
+    h2 {
+        color: #1f2937;
+    }
+
+    .subtitle {
+        color: #6b7280;
+        margin-bottom: 30px;
+    }
+
+    .cert-card {
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .remove-btn {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: none;
+        border: none;
+        color: #b91c1c;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .row {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    .field {
+        flex: 1 1 48%;
+        min-width: 260px;
+    }
+
+    label {
+        font-weight: 600;
+        margin-bottom: 6px;
+        display: block;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
+    }
+
+    .add-btn {
+        background: #1975B8;
+        color: #fff;
+        border: none;
+        padding: 14px 32px;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+        .add-btn:hover {
+            background: #1975B8;
+        }
+
+    .actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 40px;
+    }
+
+    .back-btn {
+        background: #f3e6ec;
+        color: #1975B8;
+        padding: 14px 30px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .next-btn {
+        background: #1975B8;
+        color: #fff;
+        padding: 14px 30px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+    }
+</style>
+<body>
+    <div class="form-card">
+        <h2>Certifications</h2>
+        <p class="subtitle">Add your professional certifications</p>
+
+        <div id="certificationsContainer"></div>
+
+        <button type="button" class="add-btn" onclick="addCertification()">+ Add Certification</button>
+
+        <div class="actions">
+            <a asp-controller="Create" asp-action="Step3" class="back-btn">← Back</a>
+            <a asp-controller="Create" asp-action="Step5" class="next-btn">Save & Next →</a>
+        </div>
+    </div>
+
+    <script>
+        function createCertification(removable) {
+            const container = document.getElementById("certificationsContainer");
+            const div = document.createElement("div");
+            div.className = "cert-card";
+
+            div.innerHTML = `
+                ${removable ? `<button class="remove-btn" onclick="this.parentElement.remove()">✕</button>` : ``}
+
+                <div class="row">
+                    <div class="field">
+                        <label>Certification Title</label>
+                        <input type="text" placeholder="Eg: AWS Certified Developer">
+                    </div>
+
+                    <div class="field">
+                        <label>Issued By</label>
+                        <input type="text" placeholder="Eg: Amazon Web Services">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="field">
+                        <label>Issued Date</label>
+                        <input type="date">
+                    </div>
+
+                    <div class="field">
+                        <label>Expiry</label>
+                                <input type="Date" placeholder="Valid Until (Optional)">
+                    </div>
+                </div>
+                <div class="row">
+                     <label>Certification Url</label>
+                     <input type="url" placeholder="https://...">
+                </div>
+            `;
+
+            container.appendChild(div);
+        }
+
+        function addCertification() {
+            createCertification(true);
+        }
+
+        // default certification card
+        document.addEventListener("DOMContentLoaded", () => {
+            createCertification(false);
+        });
+    </script>
+</body>
