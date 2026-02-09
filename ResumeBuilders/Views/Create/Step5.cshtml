@@ -1,0 +1,412 @@
+﻿@{
+    ViewData["Title"] = "Step 5 - Projects";
+    Layout = "~/Views/Create/Index.cshtml";
+}
+
+<style>
+    * {
+        box-sizing: border-box;
+        font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+        margin: 0;
+        background: #ffffff;
+    }
+
+    .form-card {
+        background: #fff;
+        padding: 40px;
+        border-radius: 14px;
+        box-shadow: 0 20px 40px rgba(0,0,0,.1);
+        max-width: 900px;
+        margin: auto;
+    }
+
+    h2 {
+        color: #1f2937;
+    }
+
+    .subtitle {
+        color: #6b7280;
+        margin-bottom: 30px;
+    }
+
+    .row {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    .field {
+        flex: 1 1 48%;
+        min-width: 280px;
+    }
+
+    label {
+        font-weight: 600;
+        margin-bottom: 6px;
+        display: block;
+    }
+
+    input, textarea {
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
+    }
+
+    textarea {
+        resize: vertical;
+    }
+
+    /* Project Card */
+    .project-card {
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .remove-btn {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        border: none;
+        background: none;
+        color: #b91c1c;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    /* Dropdown */
+    .dropdown {
+        position: relative;
+    }
+
+    .dropdown-btn {
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
+        cursor: pointer;
+        background: #fff;
+    }
+
+    .dropdown-list {
+        position: absolute;
+        top: 110%;
+        left: 0;
+        width: 100%;
+        background: #fff;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        padding: 10px 12px;
+        max-height: 180px;
+        overflow-y: auto;
+        display: none;
+        z-index: 10;
+    }
+
+        .dropdown-list .add-btn {
+            width: 100%;
+            margin-top: 12px;
+            padding: 10px;
+        }
+
+    .dropdown-item {
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 4px;
+        font-size: 14px;
+    }
+
+        .dropdown-item input[type="checkbox"] {
+            margin: 0;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+
+
+
+
+    .tech-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+    }
+
+    .tech-tag {
+        background: #1975B8;
+        color: #fff;
+        padding: 6px 10px;
+        border-radius: 16px;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+        .tech-tag span {
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+    .add-btn {
+        background: #1975B8;
+        color: #ffffff;
+        border: none;
+        padding: 14px 32px;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+
+    .other-popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fff;
+        width: 320px;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 20px 40px rgba(0,0,0,.2);
+        z-index: 999;
+    }
+
+    .popup-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 20px;
+    }
+
+    .popup-btn {
+        padding: 14px 32px;
+        border-radius: 999px;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+        .popup-btn.add {
+            background: #1975B8;
+            color: #fff;
+        }
+
+        .popup-btn.cancel {
+            background: #f3e6ec;
+            color: #1975B8;
+        }
+
+    /* Actions */
+    .actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 40px;
+    }
+
+    .back-btn {
+        background: #f3e6ec;
+        color: #1975B8;
+        padding: 14px 30px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .next-btn {
+        background: #1975B8;
+        color: #fff;
+        padding: 14px 30px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+    }
+</style>
+<body>
+    <div class="form-card">
+        <h2>Projects</h2>
+        <p class="subtitle">Add details about your projects</p>
+
+        <div id="projectsContainer"></div>
+
+        <button type="button" class="add-btn" onclick="addProject()">+ Add Project</button>
+
+        <div class="actions">
+            <a asp-controller="Create" asp-action="Step3" class="back-btn">← Back</a>
+            <a asp-controller="Create" asp-action="Step6" class="next-btn">Save & Next →</a>
+        </div>
+    </div>
+
+    <div class="other-popup" id="techPopup">
+        <h4>Add Other Technologies</h4>
+        <input type="text" id="otherTechInput" placeholder="Eg: Docker, AWS, Azure">
+
+        <div class="popup-actions">
+            <button class="popup-btn add" onclick="addOtherTech()">Add</button>
+            <button class="popup-btn cancel" onclick="closeTechPopup()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        let activeTechContainer = null;
+
+        function getSkillsFromStorage() {
+            const data = localStorage.getItem("resumeSkills");
+            return data ? data.split(",").map(s => s.trim()) : [];
+        }
+
+        function createProjectCard(removable) {
+            const skills = getSkillsFromStorage();
+            const card = document.createElement("div");
+            card.className = "project-card";
+
+            card.innerHTML = `
+                ${removable ? `<button class="remove-btn" onclick="this.parentElement.remove()">✕</button>` : ``}
+
+                <div class="row">
+                    <div class="field">
+                        <label>Project Title</label>
+                        <input type="text">
+                    </div>
+                    <div class="field">
+                        <label>Project Link / GitHub</label>
+                        <input type="url">
+                    </div>
+                </div>
+                 <div class="row">
+                    <div class="field">
+                        <label>Organization</label>
+                        <input type="text">
+                    </div>
+                    <div class="field">
+                        <label>Role</label>
+                        <input type="url">
+                    </div>
+                </div>
+                 <div class="row">
+                    <div class="field">
+                        <label>Start Date</label>
+                        <input type="Date">
+                    </div>
+                    <div class="field">
+                        <label>End Date</label>
+                        <input type="Date">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="field">
+                        <label>Description</label>
+                        <textarea rows="3"></textarea>
+                    </div>
+                </div>
+
+                <label>Tech Stack </label>
+
+                <div class="dropdown">
+                    <div class="dropdown-btn" onclick="toggleDropdown(this)">Select technologies</div>
+                    <div class="dropdown-list">
+                        ${skills.map(s => `
+                            <div class="dropdown-item">
+                                <input type="checkbox" value="${s}"> ${s}
+                            </div>`).join("")}
+
+                        <div class="dropdown-item">
+                            <input type="checkbox" value="Other"> Other
+                        </div>
+
+                        <button class="add-btn" onclick="addTech(this)">Add</button>
+                    </div>
+                </div>
+
+                <div class="tech-tags"></div>
+            `;
+
+            document.getElementById("projectsContainer").appendChild(card);
+        }
+
+        function addProject() {
+            createProjectCard(true);
+        }
+
+        function toggleDropdown(btn) {
+            const list = btn.nextElementSibling;
+            list.style.display = list.style.display === "block" ? "none" : "block";
+        }
+
+        function addTech(btn) {
+                const dropdown = btn.parentElement;
+                const card = dropdown.closest(".project-card");
+                const tagsContainer = card.querySelector(".tech-tags");
+                const checkboxes = dropdown.querySelectorAll("input[type='checkbox']");
+                let otherSelected = false;
+
+                checkboxes.forEach(cb => {
+                    if (cb.checked) {
+                        if (cb.value === "Other") {
+                            otherSelected = true;
+                        } else {
+                            addTechTag(tagsContainer, cb.value);
+                        }
+                        cb.checked = false;
+                    }
+                });
+
+
+                dropdown.style.display = "none";
+
+                if (otherSelected) {
+                    activeTechContainer = tagsContainer;
+                    openTechPopup();
+                }
+        }
+
+        function addTag(container, text) {
+            if ([...container.children].some(t => t.innerText.includes(text))) return;
+            const tag = document.createElement("div");
+            tag.className = "tech-tag";
+            tag.innerHTML = `${text} <span onclick="this.parentElement.remove()">×</span>`;
+            container.appendChild(tag);
+        }
+
+        function openTechPopup() {
+            document.getElementById("techPopup").style.display = "block";
+        }
+
+        function closeTechPopup() {
+            document.getElementById("techPopup").style.display = "none";
+        }
+
+        function addOtherTech() {
+            const val = document.getElementById("otherTechInput").value.trim();
+            if (!val || !activeTechContainer) return;
+
+            val.split(",").map(v => v.trim()).filter(Boolean)
+                .forEach(v => addTag(activeTechContainer, v));
+
+            document.getElementById("otherTechInput").value = "";
+            closeTechPopup();
+        }
+
+        document.addEventListener("DOMContentLoaded", () => createProjectCard(false));
+            document.addEventListener("click", function (e) {
+            if (!e.target.closest(".dropdown")) {
+                document.querySelectorAll(".dropdown-list")
+                    .forEach(d => d.style.display = "none");
+            }
+        });
+
+    </script>
+</body>
