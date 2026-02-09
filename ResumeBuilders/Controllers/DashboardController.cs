@@ -4,6 +4,7 @@ using ResumeBuilders.Data;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
 
+[ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
 public class DashboardController : Controller
 {
     private readonly ApplicationDbContext _context;
