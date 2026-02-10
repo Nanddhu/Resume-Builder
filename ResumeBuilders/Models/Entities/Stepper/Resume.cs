@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ResumeBuilders.Models.Entities.Stepper
 {
-    [Table("resumes")]
+  
     public class Resume
     {
         [Key]

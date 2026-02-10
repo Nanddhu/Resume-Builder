@@ -6,11 +6,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<AuthService>();
-builder.Services.AddDbContext<ApplicationDbContext>(options=>
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
 options.UseMySql(
     builder.Configuration.GetConnectionString("DefaultConnection"),
-    new MySqlServerVersion(new Version(8, 0, 33))
+    new MySqlServerVersion(new Version(8, 0, 33)),
+    mySqlOptions=>
+    {
+        mySqlOptions.EnableRetryOnFailure();
+    }
     ));
+ 
 builder.Services.AddSession(options=>
 {
     options.IdleTimeout=TimeSpan.FromMinutes(30);

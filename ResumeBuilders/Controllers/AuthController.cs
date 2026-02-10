@@ -53,7 +53,7 @@ namespace ResumeBuilders.Controllers
                 ModelState.AddModelError("", result.Message);
                 return View(model);
             }
-            HttpContext.Session.SetInt32("UserId", result.User.UserId);
+            HttpContext.Session.SetInt32("UserID", result.User.UserId);
             HttpContext.Session.SetString("UserName", result.User.Name);
             HttpContext.Session.SetString("UserEmail", result.User.Email);
 

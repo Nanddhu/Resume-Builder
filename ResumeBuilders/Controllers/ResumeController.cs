@@ -17,8 +17,8 @@ namespace ResumeBuilders.Controllers
             var resumes = _Context.Resumes.
                 Select(r => new ResumeListViewModel
                 {
-                    ResumeId = r.ResumeId,
-                    Name = r.FullName,
+                    ResumeId = r.ID,
+                    Name = r.FirstName+""+r.LastName,
                     CreatedAt = r.CreatedAt,
                     UpdatedAt = r.UpdatedAt,
                     CreatedBy = r.User.Name

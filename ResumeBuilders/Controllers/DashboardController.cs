@@ -4,46 +4,50 @@ using ResumeBuilders.Data;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
 
-[ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-public class DashboardController : Controller
+namespace ResumeBuilders.Controllers
 {
-    private readonly ApplicationDbContext _context;
 
-    public DashboardController(ApplicationDbContext context)
+    [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
+    public class DashboardController : Controller
     {
-        _context = context;
-    }
+        private readonly ApplicationDbContext _context;
 
-    public IActionResult Index()
-    {
-        
-        var userId = HttpContext.Session.GetInt32("UserId");
-        if (userId == null)
+        public DashboardController(ApplicationDbContext context)
         {
-            return RedirectToAction("Login", "Auth");
+            _context = context;
         }
 
-      
-        var userName = HttpContext.Session.GetString("UserName");
-        var userEmail = HttpContext.Session.GetString("UserEmail");
+        public IActionResult Index()
+        {
 
-        ViewBag.UserName = userName;
-        ViewBag.UserEmail = userEmail;
-
-     
-        var resumes = _context.Resumes
-            .Where(r => r.UserId == userId)
-            .Select(r => new ResumeListViewModel
+            var userId = HttpContext.Session.GetInt32("UserID");
+            if (userId == null)
             {
-                ResumeId = r.ResumeId,
-                Name = r.FullName,
-                CreatedAt = r.CreatedAt,
-                UpdatedAt = r.UpdatedAt,
-                CreatedBy = r.User.Name
-            })
-            .ToList();
+                return RedirectToAction("Login", "Auth");
+            }
 
-        
-        return View(resumes);
+
+            var userName = HttpContext.Session.GetString("UserName");
+            var userEmail = HttpContext.Session.GetString("UserEmail");
+
+            ViewBag.UserName = userName;
+            ViewBag.UserEmail = userEmail;
+
+
+            var resumes = _context.Resumes
+                .Where(r => r.UserID == userId)
+                .Select(r => new ResumeListViewModel
+                {
+                    ResumeId = r.ID,
+                    Name = r.FirstName + " " + r.LastName,
+                    CreatedAt = r.CreatedAt,
+                    UpdatedAt = r.UpdatedAt,
+                    CreatedBy = r.User.Name
+                })
+                .ToList();
+
+
+            return View(resumes);
+        }
     }
 }
