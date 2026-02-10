@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ResumeBuilders.Models.Entities.Stepper;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace ResumeBuilders.Models.Entities

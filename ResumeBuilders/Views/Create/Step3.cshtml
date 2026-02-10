@@ -1,0 +1,375 @@
+﻿@{
+    ViewData["Title"] = "Step 3 - Skills";
+    Layout = "~/Views/Create/Index.cshtml";
+}
+
+<style>
+    * {
+        box-sizing: border-box;
+        font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+        margin: 0;
+        background: #ffffff;
+    }
+
+    .form-card {
+        background: #fff;
+        padding: 40px;
+        border-radius: 14px;
+        box-shadow: 0 20px 40px rgba(0,0,0,.1);
+        max-width: 900px;
+        margin: auto;
+    }
+
+    h2 {
+        color: #1f2937;
+    }
+
+    .subtitle {
+        color: #6b7280;
+        margin-bottom: 30px;
+    }
+
+    label {
+        font-weight: 600;
+        margin-bottom: 6px;
+        display: block;
+    }
+
+    .dropdown {
+        position: relative;
+        width: 100%;
+    }
+
+    .dropdown-btn {
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
+        background: #fff;
+        cursor: pointer;
+        text-align: left;
+    }
+
+    .dropdown-list {
+        position: absolute;
+        top: 110%;
+        left: 0;
+        width: 100%;
+        background: #fff;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        padding: 12px;
+        max-height: 180px;
+        overflow-y: auto;
+        display: none;
+        z-index: 10;
+    }
+
+        .dropdown-list .add-btn {
+            width: 100%;
+            margin-top: 12px;
+        }
+
+
+    .dropdown-item {
+        margin-bottom: 8px;
+    }
+
+    .skill-tag {
+        background: #1975B8;
+        color: #fff;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 30px;
+        margin-left: 6px;
+    }
+
+        .skill-tag .remove-skill {
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            line-height: 1;
+            opacity: 0.8;
+        }
+
+            .skill-tag .remove-skill:hover {
+                opacity: 1;
+            }
+
+
+    .actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 40px;
+    }
+
+    .next-btn {
+        background: #1975B8;
+        color: #fff;
+        padding: 14px 30px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .other-popup {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 320px;
+        background: #fff;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        z-index: 999;
+    }
+
+        .other-popup h4 {
+            margin-bottom: 12px;
+            color: #1f2937;
+        }
+
+        .other-popup input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+        }
+
+
+    .popup-btn {
+        padding: 14px 32px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 15px;
+        cursor: pointer;
+        border: none;
+        min-width: 120px;
+    }
+
+    .add-btn {
+        background: #1975B8;
+        color: #ffffff;
+        border: none;
+        padding: 14px 32px;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+
+    .cancel-btn {
+        background: #f3e6ec;
+        color: #1975B8;
+        border: none;
+        padding: 14px 32px;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+
+    .popup-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 14px;
+        margin-top: 20px;
+    }
+
+    .other-btn {
+        background: none;
+        border: none;
+        color: #1975B8;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .back-btn {
+        background: #f3e6ec;
+        color: #1975B8;
+        padding: 14px 30px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+</style>
+<body>
+    <div class="form-card">
+        <h2>Skills</h2>
+        <p class="subtitle">Select your technical skills</p>
+
+        <label>Technical Skills</label>
+        <div class="dropdown">
+            <div class="dropdown-btn" onclick="toggleDropdown()">
+                Select skills
+            </div>
+
+            <div class="dropdown-list" id="skillDropdown">
+                <div class="dropdown-item"><input type="checkbox" value="C#"> C#</div>
+                <div class="dropdown-item"><input type="checkbox" value=".NET"> .NET</div>
+                <div class="dropdown-item"><input type="checkbox" value="ASP.NET Core"> ASP.NET Core</div>
+                <div class="dropdown-item"><input type="checkbox" value="Java"> Java</div>
+                <div class="dropdown-item"><input type="checkbox" value="Python"> Python</div>
+                <div class="dropdown-item"><input type="checkbox" value="SQL"> SQL</div>
+                <div class="dropdown-item"><input type="checkbox" value="HTML"> HTML</div>
+                <div class="dropdown-item"><input type="checkbox" value="CSS"> CSS</div>
+                <div class="dropdown-item"><input type="checkbox" value="JavaScript"> JavaScript</div>
+                <div class="dropdown-item"><input type="checkbox" value="Git"> Git</div>
+
+
+                <div class="dropdown-item">
+                    <input type="checkbox" id="otherCheckbox" value="Other"> Other
+                </div>
+
+
+
+                <button class="add-btn" onclick="addSkills()">Add</button>
+            </div>
+
+        </div>
+        <div class="other-popup" id="otherPopup">
+            <h4>Add Other Skill</h4>
+            <input type="text" id="otherSkillInput" placeholder="Eg: Docker, AWS, React">
+            <div class="popup-actions">
+                <button type="button" class="add-btn" onclick="addOtherSkill()">Add</button>
+                <button type="button" class="cancel-btn" onclick="closeOtherPopup()">Cancel</button>
+            </div>
+        </div>
+
+
+
+        <div class="skill-tags" id="skillTags"></div>
+        <input type="hidden" id="skillsInput" name="Skills" />
+
+
+
+        <div class="actions">
+            <a asp-controller="Create" asp-action="Step2" class="back-btn">← Back</a>
+            <a asp-controller="Create" asp-action="Step4" class="next-btn">Save & Next →</a>
+        </div>
+    </div>
+
+    <script>
+        function toggleDropdown() {
+            const list = document.getElementById("skillDropdown");
+            list.style.display = list.style.display === "block" ? "none" : "block";
+        }
+            function updateSkillsInput() {
+            const skills = [...document.querySelectorAll("#skillTags .skill-tag")]
+                .map(tag => tag.innerText.trim());
+
+            document.getElementById("skillsInput").value = skills.join(",");
+        }
+
+            function addSkills() {
+            const checked = document.querySelectorAll("#skillDropdown input:checked");
+            const container = document.getElementById("skillTags");
+            let otherSelected = false;
+
+            checked.forEach(cb => {
+                if (cb.value === "Other") {
+                    otherSelected = true;
+                } else {
+                    const exists = [...container.children]
+                        .some(t => t.innerText.toLowerCase().includes(cb.value.toLowerCase()));
+
+                    if (!exists) {
+                        const tag = document.createElement("div");
+                        tag.className = "skill-tag";
+                        tag.innerHTML = `
+                            ${cb.value}
+                            <span class="remove-skill" onclick="removeSkill(this)">×</span>
+                        `;
+                        container.appendChild(tag);
+                    }
+                }
+
+                cb.checked = false;
+            });
+
+            updateSkillsInput();
+
+             document.getElementById("skillDropdown").style.display = "none";
+            if (otherSelected) {
+                openOtherPopup();
+            }
+
+
+        }
+
+
+
+            function openOtherPopup() {
+            document.getElementById("otherPopup").style.display = "block";
+        }
+
+        function removeSkill(el){
+            el.parentElement.remove();
+            updateSkillsInput();
+        }
+
+        function closeOtherPopup() {
+            document.getElementById("otherPopup").style.display = "none";
+        }
+
+        function addOtherSkill() {
+            const input = document.getElementById("otherSkillInput");
+            const value = input.value.trim();
+            const container = document.getElementById("skillTags");
+
+            if (!value) {
+                alert("Please enter at least one skill");
+                return;
+            }
+
+            const skills = value
+                .split(",")
+                .map(s => s.trim())
+                .filter(s => s !== "");
+
+            skills.forEach(skill => {
+                const exists = [...container.children]
+                    .some(t => t.innerText.toLowerCase().includes(skill.toLowerCase()));
+
+                if (!exists) {
+                    const tag = document.createElement("div");
+                    tag.className = "skill-tag";
+                    tag.innerHTML = `
+                        ${skill}
+                        <span class="remove-skill" onclick="removeSkill(this)">×</span>
+                    `;
+                    container.appendChild(tag);
+                }
+            });
+
+            input.value = "";
+            updateSkillsInput();
+            closeOtherPopup();
+        }
+
+
+
+
+
+
+
+        document.addEventListener("click", function (e) {
+            if (!e.target.closest(".dropdown")) {
+                document.getElementById("skillDropdown").style.display = "none";
+            }
+        });
+    </script>
+</body>

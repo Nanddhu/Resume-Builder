@@ -1,0 +1,184 @@
+﻿@{
+    ViewData["Title"] = "Step 6- Preview";
+    Layout = "~/Views/Create/Index.cshtml";
+}
+
+<style>
+    * {
+        box-sizing: border-box;
+        font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+        margin: 0;
+        background: #ffffff;
+    }
+
+    .preview-container {
+        display: flex;
+        gap: 30px;
+    }
+
+    .preview-card {
+        flex: 2;
+        background: #ffffff;
+        padding: 40px;
+        border-radius: 14px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+
+    .action-card {
+        flex: 1;
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 14px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        height: fit-content;
+    }
+
+    h2 {
+        font-size: 26px;
+        margin-bottom: 10px;
+        color: #1f2937;
+    }
+
+    h3 {
+        margin-top: 30px;
+        margin-bottom: 10px;
+        color: #1975B8;
+        font-size: 18px;
+    }
+
+    p {
+        color: #374151;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .divider {
+        height: 1px;
+        background: #e5e7eb;
+        margin: 20px 0;
+    }
+
+    .tag {
+        display: inline-block;
+        background: #f3e6ec;
+        color: #1975B8;
+        padding: 6px 10px;
+        border-radius: 14px;
+        font-size: 13px;
+        margin: 4px 6px 0 0;
+    }
+
+    .btn {
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 14px;
+        margin-top: 12px;
+        border-radius: 10px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background: #1f73b7;
+        color: #ffffff;
+    }
+
+        .btn-primary:hover {
+            background: #5faee3;
+        }
+
+    .btn-secondary {
+        background: #cfe6f7;
+        color: #1f73b7;
+    }
+
+        .btn-secondary:hover {
+            background: #5faee3;
+        }
+
+</style>
+<body>
+    <div class="preview-container">
+
+
+        <div class="preview-card">
+
+
+
+            <h2>Nandhini</h2>
+            <p>Email: nandhini@email.com | Phone: 9876543210</p>
+            <p>Chennai, Tamil Nadu</p>
+
+            <div class="divider"></div>
+
+
+            <h3>Summary</h3>
+            <p>
+                Passionate software developer with experience in building web
+                applications using ASP.NET Core and SQL Server.
+            </p>
+
+
+            <h3>Education</h3>
+            <p><strong>B.E Computer Science</strong> – XYZ Engineering College (2019 – 2023)</p>
+            <p>CGPA: 8.2</p>
+
+            <p><strong>12th</strong> – ABC Higher Secondary School (2019)</p>
+            <p>Percentage: 82%</p>
+
+
+            <h3>Skills</h3>
+            <div>
+                <span class="tag">C#</span>
+                <span class="tag">ASP.NET Core</span>
+                <span class="tag">SQL Server</span>
+                <span class="tag">JavaScript</span>
+            </div>
+
+
+            <h3>Projects</h3>
+            <p><strong>Resume Builder Application</strong></p>
+            <p>
+                Developed a resume builder web application using ASP.NET Core MVC
+                with stepper-based UI and database integration.
+            </p>
+
+        </div>
+
+
+        <div class="action-card">
+            <h3>Actions</h3>
+
+            <a asp-controller="Create"
+               asp-action="Step5"
+               class="btn btn-secondary">
+                ← Edit Projects
+            </a>
+
+            <a asp-controller="Create"
+               asp-action="Step1"
+               class="btn btn-secondary">
+                Edit Resume Details
+            </a>
+
+            <form method="post" asp-controller="Create" asp-action="SaveFinal">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-primary">
+                    Save Resume
+                </button>
+            </form>
+
+            <a class="btn btn-secondary"
+               id="DownloadBtn"
+               disabled>
+                Download your cv
+            </a>
+        </div>
+
+    </div>
+</body>
